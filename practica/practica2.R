@@ -58,25 +58,102 @@ fun_basicsdt(hit,fr)[1]>0
 # ¿Qué desviación estándar elegiría para las distribuciones? Establecer un criterio no sesgado justo en la mitad de los
 # valores medios de las distribuciones.
 
+# Dato
 d <- 1.5
+# Criterio no sesgado
 c <- 0.75
+# Elijo varianzas unitarias
 sigmaS <- 1
 sigmaN <- 1
+# Elijo medias compatibles con d 
 muS <- 1.5
 muN <- 0
 
-## 7B
+## 7B 
+# Usando la función rnorm generar 500 muestras de la distribución señal+ruido 
+# y 500 de la distribución ruido. Guardar la información de qué tipo de trial es cada muestra
+## 7C
+# Para cada muestra, simular la decisión del participante: ¿había un target presente o no? Si la muestra 
+# es mayor que el criterio fijado, la respuesta es “si”. Caso contrario, es “no"
+## 7D
+# Determinar en cada caso si la respuesta es correcta. Luego calculá el % de respuestas correctas de esteparticipante
+## 7E
+# Calcular la tasa de hits y de falsas alarmas.
+## 7F 
+# Calcular d0 y el sesgo de respuesta que exhibe el participante, c
+## 7G
+# Comparar los valores de d0 y c calculados en F con los del modelo que generó los datos.
+# ¿Coincide el d0? ¿Es realmente no sesgado el observador?
+## 7H
+# ¿Qué pasa si se reduce el número de trials? ¿Qué tan estable es la predicción de la simulación (d0 y c) de una 
+# simulación a la siguiente?
 
+# 7B, 7C
 conP <- rnorm(500,muS,sigmaS) > c
 sinP <- rnorm(500,muN,sigmaN) > c
 
+# Matriz de confusion
 confusion <- matrix(0,2,2)
 confusion[1,1] <- sum(conP)
 confusion[1,2] <- sum(!conP)
 confusion[2,1] <- sum(sinP)
 confusion[2,2] <- sum(!sinP)
 
+# 7E
 hits <- confusion[1,1]/sum(confusion[1,])
 fa <- confusion[1,2]/sum(confusion[2,])
 
-fun_basicsdt(hits,fa)
+# 7F
+fun_basicsdt(hits,fa)m
+# d_estimado == 1.438457, c_estimado==0.000000
+
+# 7G
+# El d_estiado es muy cercano al d.
+# El c_estimado es 0, lo que indica que el observador es perfectamente no sesgado
+
+# 7H
+## Repito el procedimiento con 
+funcion7 <- function(n=500){
+  conP <- rnorm(n,muS,sigmaS) > c
+  sinP <- rnorm(n,muN,sigmaN) > c
+  
+  # Matriz de confusion
+  confusion <- matrix(0,2,2)
+  confusion[1,1] <- sum(conP)
+  confusion[1,2] <- sum(!conP)
+  confusion[2,1] <- sum(sinP)
+  confusion[2,2] <- sum(!sinP)
+  
+  # 7E
+  hits <- confusion[1,1]/sum(confusion[1,])
+  fa <- confusion[1,2]/sum(confusion[2,])
+  
+  # 7F
+  return(fun_basicsdt(hits,fa))
+}
+
+for(i in seq(20)){
+  print(funcion7(10))
+}
+
+# Datos
+#[1] 2.563103 0.000000
+#[1] 1.048801 0.000000
+#[1] 0.5066942 0.0000000
+#[1]  1.683242e+00 -1.110223e-16
+#[1]  1.683242e+00 -1.110223e-16
+#[1]  1.683242e+00 -1.110223e-16
+#[1] 1.048801 0.000000
+#[1]  1.683242e+00 -1.110223e-16
+#[1] 2.563103 0.000000
+#[1]  1.683242e+00 -1.110223e-16
+#[1] 2.563103 0.000000
+#ERROR: Illegal input for the invcdf function.
+#[1]  1.683242e+00 -1.110223e-16
+#ERROR: Illegal input for the invcdf function.
+#[1]  1.683242e+00 -1.110223e-16
+#[1]  1.683242e+00 -1.110223e-16
+
+# Conlusion:
+# El observador resulta siempre NO sesgado (Cuando hay datos para calcular los hits y las falsas alarmas)
+# Lo que varía es la estimación de la diferencia entre medias.
