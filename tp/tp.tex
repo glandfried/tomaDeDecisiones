@@ -1,0 +1,123 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\input{../tex/encabezado.tex}
+\input{../tex/tikzlibrarybayesnet.code.tex}
+
+\usetikzlibrary{arrows}
+\usetikzlibrary{shapes}
+\usetikzlibrary{fit}
+\usetikzlibrary{chains}
+
+%\usetikzlibrary{shapes.geometric,positioning}
+
+
+\title{ Ergodicity Breaking}
+
+\author{Gustavo Landfried}
+\affil{\small Universidad de Buenos Aires. Facultad de Ciencias Exactas y Naturales. Departamento de Computaci\'on. Buenos Aires, Argentina}
+\affil[]{Correspondencia: \url{gustavolandfried@gmail.com}}
+
+
+
+\begin{document}
+
+
+\maketitle
+
+Dada una matriz de pagos,
+
+\begin{equation}
+ v = \bordermatrix{ & P & N  \cr
+      T & v(T,P) & v(T,N)  \cr
+      F & v(F,P) & v(F,N)  \cr} 
+\end{equation}
+
+y una matriz de percepci\'on parametrizada
+
+\begin{equation}
+ p_{\lambda} = \bordermatrix{ & P & N  \cr
+      T & p_{\lambda}(T,P) & p_{\lambda}(T,N)  \cr
+      F & p_{\lambda}(F,P) & p_{\lambda}(F,N)  \cr} 
+\end{equation}
+
+seg\'un la teor\'ia de decisi\'on~\cite{gardner2019-optimalityDecisionTheory} el criterio de decisi\'on \'optimo es el que maximiza la utilidad esperada
+
+\begin{equation}
+ \lambda_{opt} = \underset{\lambda}{\text{arg max}} \text{utilidadEsperada}(V,p_{\lambda})
+\end{equation}
+
+donde 
+\begin{equation*}
+\text{utilidadEsperada}(V,p_{\lambda}) =  p_{\lambda}(T,P)\cdot v(T,P) + p_{\lambda}(T,N)\cdot v(T,N) + p_{\lambda}(F,P)\cdot v(F,P) + p_{\lambda}(F,N)\cdot v(F,N) 
+\end{equation*}
+
+Veamos un ejemplo.
+Supongamos que tenemos un test con las siguientes caracter\'isticas.
+
+\begin{figure}[H]
+\centering
+  \includegraphics[page=1,width=0.48\textwidth]{figures/ergodicity_breaking.pdf}
+  \caption{}
+  \label{}
+\end{figure}
+
+Y sabemos que los casos verdaderos y falsos ocurren con misma probabilidades.
+Si quisieramos maximizar la cantidad de respuestas correctas, el criterio \'optimo estar\'ia ubicado en el medio de las dos distribuciones, $\lambda = 1$.
+En este ejemplo, sin embargo, lo \'unico que no interesa es maximizar la probabilidad $p(T|P)$.
+Por eso proponemos la siguiente matriz de pagos.
+
+\begin{equation}
+ v = \bordermatrix{ & P & N  \cr
+      T & 1.00 & 0.00  \cr
+      F & -0.99 & 0.00  \cr} 
+\end{equation}
+
+Solo nos importa lo que pasa cuando el test es positivo porque esos son los \'unico elementos que intervienen en el c\'alculo de $p(T|P)$
+
+\begin{equation}
+ p(T|P) = \frac{p(T,P)}{p(T,P)+p(F,P)}
+\end{equation}
+
+\begin{figure}[H]
+\centering
+  \includegraphics[page=2,width=0.48\textwidth]{figures/ergodicity_breaking.pdf}
+  \caption{Criterio \'optimo y conservador (aversi\'on al riesgo).}
+  \label{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+  \begin{subfigure}[t]{0.48\textwidth}
+  \includegraphics[page=4,width=\textwidth]{figures/ergodicity_breaking.pdf}
+  \caption{\'Optimo}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.48\textwidth}
+  \includegraphics[page=3,width=\textwidth]{figures/ergodicity_breaking.pdf}
+  \caption{conservador}
+  \end{subfigure}
+  \caption{Probabilidades $p(P|T)$ (claro + oscuro) y $p(P|F)$ (oscuro). El n\'umero representa el likelihood ratio.}
+  \label{}
+\end{figure}
+
+
+
+Lo que estamos calculando es el promedio de los estados del sistema.
+Pero a nosotros lo que nos interesa es el resultado que como individuos efectivamente vamos a obtener el tiempo.
+Cuando el promedio coincide con el equilibrio temporal de cualquier individuo, decimos que el sistema es ergódico, y podemos usar el primero para calcular el segundo.
+Sin embargo, no es cierto en general~\cite{peters2019-ergodicityEconomics}.
+Depende del proceso.
+
+En evoluci\'on todos aprenden el hecho de que el crecimiento de una poblaci\'on es un proceso multiplicativo y ruidoso: una secuencia de probabilidades de supervivencia y reproducci\'on.
+En los procesos multiplicativos los impactos f\'isicos de las perdidas son en general m\'as fuertes que las ganancias.
+Con que haya un cero en la secuencia de generaciones, no hay posibilidad de recuperarse, estamos extintos.
+
+
+
+
+{\scriptsize
+\bibliographystyle{../biblio/plos2015}
+\bibliography{../biblio/biblio_norUrl.bib}
+}
+
+
+\end{document}
