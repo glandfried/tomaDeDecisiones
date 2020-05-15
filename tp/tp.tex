@@ -52,7 +52,7 @@ donde
 \end{equation*}
 
 Veamos un ejemplo.
-Supongamos que tenemos un test con las siguientes caracter\'isticas.
+Supongamos que tenemos dos tipo de frutas, unas alimenticias (señal) y otras venenosas (ruido), que se distinguen solo por su color. 
 
 \begin{figure}[H]
 \centering
@@ -61,9 +61,11 @@ Supongamos que tenemos un test con las siguientes caracter\'isticas.
   \label{}
 \end{figure}
 
-Y sabemos que los casos verdaderos y falsos ocurren con misma probabilidades.
+Sabemos que los casos verdaderos y falsos ocurren con misma probabilidades.
 Si quisieramos maximizar la cantidad de respuestas correctas, el criterio \'optimo estar\'ia ubicado en el medio de las dos distribuciones, $\lambda = 1$.
-En este ejemplo, sin embargo, lo \'unico que no interesa es maximizar la probabilidad $p(T|P)$.
+Pero en este ejemplo lo \'unico que no interesa es saber cuál fruta podemos comer. 
+Necesitamos asegurarnos que la fruta que vayamos a comer decidamos comer ($P$) sea efectivamente alimenticia ($T$), porque si llegamos a comer una fruta venenosa la probabilidad de morir es alta.
+Queremos maximizar la probabilidad de que la fruta sea efectivamente aliminenticia dado que percbimos $p(T|P)$.
 Por eso proponemos la siguiente matriz de pagos.
 
 \begin{equation}
@@ -78,45 +80,62 @@ Solo nos importa lo que pasa cuando el test es positivo porque esos son los \'un
  p(T|P) = \frac{p(T,P)}{p(T,P)+p(F,P)}
 \end{equation}
 
+La matriz de pagos puede leerse de la siguiente forma.
+Si me dec\'is que coma la fruta, $P$, y resulta alimenticia $T$, entonces te premio duplicándote la utilidad, pero si la fruta es venenosa, te saco 99 de cada 100 pesos que tengas.
+Si calculamos la utilidad esperada (esperanza de pagos) vamos a encontrar un criterio \'optimo.
+
 \begin{figure}[H]
 \centering
   \includegraphics[page=2,width=0.48\textwidth]{figures/ergodicity_breaking.pdf}
   \caption{Criterio \'optimo y conservador (aversi\'on al riesgo).}
-  \label{}
 \end{figure}
+
+Sin embargo, como es un tema de vida o muerte para nosotros, no vamos a comer todo lo que nos ofrezcan, y nosotros vamos a usar un criterio m\'as conservador al propuesto por el cient\'ifico.
 
 \begin{figure}[H]
 \centering
   \begin{subfigure}[t]{0.48\textwidth}
   \includegraphics[page=4,width=\textwidth]{figures/ergodicity_breaking.pdf}
-  \caption{\'Optimo}
+  \caption{Criterio \'optimo}
   \end{subfigure}
   \begin{subfigure}[t]{0.48\textwidth}
   \includegraphics[page=3,width=\textwidth]{figures/ergodicity_breaking.pdf}
-  \caption{conservador}
+  \caption{Criterio conservador}
   \end{subfigure}
   \caption{Probabilidades $p(P|T)$ (claro + oscuro) y $p(P|F)$ (oscuro). El n\'umero representa el likelihood ratio.}
-  \label{}
 \end{figure}
 
+Veamos el resultado efectivo en el tiempo que se obtienen con el criterio propuesto por el cient\'ifico y con ell criterio usado por la persona con aversión al riesgo. 
 
+\begin{figure}[H]
+\centering
+  \includegraphics[page=5,width=0.48\textwidth]{figures/ergodicity_breaking.pdf}
+  \caption{}
+\end{figure}
 
-Lo que estamos calculando es el promedio de los estados del sistema.
-Pero a nosotros lo que nos interesa es el resultado que como individuos efectivamente vamos a obtener el tiempo.
-Cuando el promedio coincide con el equilibrio temporal de cualquier individuo, decimos que el sistema es ergódico, y podemos usar el primero para calcular el segundo.
-Sin embargo, no es cierto en general~\cite{peters2019-ergodicityEconomics}.
+Resulta que el criterio conservador tiene mejores resultados en el tiempo que el criterio \'optimo seg\'n la teor\'ia de la decisi\'on.
+La formula utilizada por la teor\'ia de la decisi\'on es un promedio de los estados posibles.
+Sin embargo, a nosotros lo que nos interesa es el resultado que como individuos efectivamente vamos a obtener el tiempo.
+Usar la formula propuesta para decidir sobre procesos intr\'insicamente temporales requiere que el promediod de estados coincida con el equilibrio que a largo plazo cualquier individuo va a alcanzar.
+Cuando esta condici\'on se cumple decimos que el sistema es ergódico, y podemos usar el primero para calcular el segundo.
+Sin embargo, no es cierto en general.
 Depende del proceso.
+Y en este caso el proceso de pagos segu\'ia un proceso multiplicativo.
 
 En evoluci\'on todos aprenden el hecho de que el crecimiento de una poblaci\'on es un proceso multiplicativo y ruidoso: una secuencia de probabilidades de supervivencia y reproducci\'on.
-En los procesos multiplicativos los impactos f\'isicos de las perdidas son en general m\'as fuertes que las ganancias.
+En los procesos multiplicativos los impactos de las perdidas son en general m\'as fuertes que las ganancias.
 Con que haya un cero en la secuencia de generaciones, no hay posibilidad de recuperarse, estamos extintos.
 
-
-
+Un comportamiento \'optimo no maximiza la utilidad sino la taza ganancia~\cite{peters2019-ergodicityEconomics}.
+Si los humanos somos racionales, entonces es esperable que adaptemos nuestro comportamiento en funci\'on del proceso, de modo de maximizar la taza de ganancia.
+La teoría de utilidad esperada supone sin embargo que las personas son irracionales, y que deciden basados en funciones de utilidad motivada por criterios psicol\'ogicos.
+Estas teor\'ias fueron puestas a prueba recientemente en lo que se conoce como el experimento de Copenhaguen~\cite{meder2019-ergodicityBreaking}.
+El resultado es contundente.
+Invito a la lectura.
 
 {\scriptsize
 \bibliographystyle{../biblio/plos2015}
-\bibliography{../biblio/biblio_norUrl.bib}
+\bibliography{../biblio/biblio_notUrl.bib}
 }
 
 

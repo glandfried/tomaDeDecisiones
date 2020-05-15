@@ -127,6 +127,8 @@ text(2,0.25,"~5",cex=1.5)
 #positivos_T <- rnorm(s,muS,sigmaS) > cr
 #positivos_F <- rnorm(r,muR,sigmaR) > cr
 
+set.seed(999)
+
 additive_history <- matrix(NA,100,1000)
 multiplicative_history <- matrix(NA,100,1000)
 multiplicative_history_opt <- matrix(NA,100,1000)
@@ -145,11 +147,11 @@ for(i in 1:100){
 plot(log(multiplicative_history[1,]),type="l",axes = F,ann = F,
      ylim=c(min(log(multiplicative_history)), max(log(multiplicative_history_opt))),col=rgb(1,0,0,0.3))
 #lines(log(additive_history[1,]),type="l",col=rgb(0,0,1,0.3))
-lines(log(multiplicative_history_opt[1,]),type="l",col=rgb(0,1,0,0.3))
+lines(log(multiplicative_history_opt[1,]),type="l",col=rgb(0,0,1,0.3))
 for (i in 2:100){
 #  lines(log(additive_history[i,]),type="l",col=rgb(0,0,1,0.3))
   lines(log(multiplicative_history[i,]),type="l",col=rgb(1,0,0,0.3))
-  lines(log(multiplicative_history_opt[i,]),type="l",col=rgb(0,1,0,0.3))
+  lines(log(multiplicative_history_opt[i,]),type="l",col=rgb(0,0,1,0.3))
 }
 mtext("Trials", side=1, line=1.75,cex = 2)
 mtext("Retornos efectivo", side=2, line=1.75,cex = 2)
@@ -157,6 +159,11 @@ axis(lwd=1,lwd.ticks=1,side=2,labels=NA,cex.axis=0.6,tck=0.02)
 axis(lwd=0,side=2,cex.axis=1.33,line=-0.66)
 axis(lwd=1,lwd.ticks=1,side=1,labels=NA,cex.axis=0.6,tck=0.02)
 axis(lwd=0,side=1,las=1,cex.axis=1.33,line=-0.66)
+legend(0,-80,pch=c(19,19),col=c(rgb(0,0,0.75),rgb(0.75,0,0)),title="Criterio",
+       legend = c("Conservador","Óptimo")
+       ,bty = "n",cex = 1.75)
+
+
 
 #######################################
 # end 
